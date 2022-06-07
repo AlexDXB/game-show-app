@@ -6,11 +6,11 @@ const button = document.getElementsByTagName('button')
 let missed = 0;
 
 let phrases = [
-    'JavaScript',
-    'Java',
-    'Python',
-    'Kotlin',
-    'Swift',
+    'JavaScript function',
+    'Java lang',
+    'Python snake',
+    'Kotlin dog',
+    'Swift ios',
 ];
 
 startButton.addEventListener('click', () => {
@@ -36,14 +36,14 @@ function addPhraseToDisplay() {
     list.appendChild(liItem);
 
     if (li === " " ) {
-        list.classList.add('space');
+        liItem.classList.add('space');
 
     } else {
-        list.classList.add('letter');
+        liItem.classList.add('letter');
     }
   } 
 };
-const wordSplit = addPhraseToDisplay(randomWordValue);
+addPhraseToDisplay(randomWordValue);
 
 function checkLetter(button) {
     const li = document.querySelectorAll('li');
@@ -53,6 +53,7 @@ function checkLetter(button) {
         if ( button.textContent === li[i].textContent.toLowerCase()) {
             li[i].classList.add('show');
              matchFound = button.textContent;
+             li[i].style.transition = 'all 1.5s ease-out';
 
         } 
     }
@@ -71,8 +72,8 @@ qwerty.addEventListener('click', (e) => {
             let tries = document.querySelectorAll('.tries img')[missed];
             tries.src = "images/lostHeart.png";
             missed++;
-
         }
+        checkWin();
 });
 
 function checkWin() {
@@ -80,14 +81,37 @@ function checkWin() {
     const liShow = document.getElementsByClassName('show');
     if ( liLetter.length === liShow.length) {
         overlay.classList.add('win');
-        overlay.children[0].textContent = 'U win'
+        overlay.children[0].textContent = 'U win';
         overlay.style.display = 'flex';
-        
+        reset()
     } else if (missed >= 5 ) {
         overlay.classList.add('lose');
-        overlay.children[0].textContent = 'You Lose!';
-        overlay.style.display = flex;
-
+        overlay.children[0].textContent = 'You Lose!';       
+        overlay.style.display = 'flex';
+        reset()
     };
-
+   
 };
+function reset () {
+    startButton.textContent = "Let's play again?";
+    const li = document.querySelectorAll('ul');
+    missed = 0;
+    for (let i = 0; i < button.length; i++) {
+        button[i].className = "";
+        button[i].disabled = 'false';
+    }
+    for (let i = 0; i < li.length; i++ ) {
+            li[i].className = "";
+            li[i].textContent = "";
+    }
+    let tries = document.querySelectorAll('li.tries');
+    for (let i = 0; i < tries.length; i++) {
+        
+        tries[i].firstElementChild.src = "images/liveHeart.png";
+    }
+    const randomWordValue = getRandomPhraseAsArray(phrases);
+     addPhraseToDisplay(randomWordValue);
+    
+};
+    
+

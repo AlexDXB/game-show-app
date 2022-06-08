@@ -35,11 +35,11 @@ function addPhraseToDisplay() {
     const list = document.querySelector('#phrase ul')
     list.appendChild(liItem);
 
-    if (li === " " ) {
-        liItem.classList.add('space');
+    if (li >= 'A' && li <= 'Z' || li >= 'a' && li <= 'z'  ) {
+        liItem.classList.add('letter');
 
     } else {
-        liItem.classList.add('letter');
+        liItem.classList.add('space');
     }
   } 
 };
@@ -66,13 +66,14 @@ qwerty.addEventListener('click', (e) => {
             btn.className = 'chosen';
             btn.disabled = 'true';
             
+            let letterFound = checkLetter(btn);
+            if ( letterFound === null) {
+                let tries = document.querySelectorAll('.tries img')[missed];
+                tries.src = "images/lostHeart.png";
+                missed++;
+            }
         };
-        let letterFound = checkLetter(btn);
-        if ( letterFound === null) {
-            let tries = document.querySelectorAll('.tries img')[missed];
-            tries.src = "images/lostHeart.png";
-            missed++;
-        }
+        
         checkWin();
 });
 
@@ -81,24 +82,30 @@ function checkWin() {
     const liShow = document.getElementsByClassName('show');
     if ( liLetter.length === liShow.length) {
         overlay.classList.add('win');
+        startButton.textContent = "Let's play again?";
         overlay.children[0].textContent = 'U win';
         overlay.style.display = 'flex';
         reset()
     } else if (missed >= 5 ) {
         overlay.classList.add('lose');
-        overlay.children[0].textContent = 'You Lose!';       
+        overlay.children[0].textContent = 'You Lose!';  
+        startButton.textContent = "Let's play again?";     
         overlay.style.display = 'flex';
         reset()
     };
    
 };
 function reset () {
-    startButton.textContent = "Let's play again?";
+    
     const li = document.querySelectorAll('ul');
+    
     missed = 0;
+    li.innerHTML = "";
+    
+    
     for (let i = 0; i < button.length; i++) {
         button[i].className = "";
-        button[i].disabled = 'false';
+        button[i].disabled = false;
     }
     for (let i = 0; i < li.length; i++ ) {
             li[i].className = "";
@@ -109,7 +116,7 @@ function reset () {
         
         tries[i].firstElementChild.src = "images/liveHeart.png";
     }
-    const randomWordValue = getRandomPhraseAsArray(phrases);
+    
      addPhraseToDisplay(randomWordValue);
     
 };

@@ -27,9 +27,9 @@ function getRandomPhraseAsArray(){
 };
 const randomWordValue = getRandomPhraseAsArray(phrases);
 
-function addPhraseToDisplay() {
-    for (let i = 0; i < randomWordValue.length; i++) {
-    const li = randomWordValue[i];
+function addPhraseToDisplay(phrase) {
+    for (let i = 0; i < phrase.length; i++) {
+    const li = phrase[i];
     const liItem = document.createElement("li");
     liItem.textContent = li;
     const list = document.querySelector('#phrase ul')
@@ -81,13 +81,13 @@ function checkWin() {
     const liLetter = document.getElementsByClassName('letter');
     const liShow = document.getElementsByClassName('show');
     if ( liLetter.length === liShow.length) {
-        overlay.classList.add('win');
-        startButton.textContent = "Let's play again?";
+        overlay.className = 'win';
         overlay.children[0].textContent = 'U win';
+        startButton.textContent = "Let's play again?";
         overlay.style.display = 'flex';
         reset()
     } else if (missed >= 5 ) {
-        overlay.classList.add('lose');
+        overlay.className = 'lose';
         overlay.children[0].textContent = 'You Lose!';  
         startButton.textContent = "Let's play again?";     
         overlay.style.display = 'flex';
@@ -116,8 +116,8 @@ function reset () {
         
         tries[i].firstElementChild.src = "images/liveHeart.png";
     }
-    
-     addPhraseToDisplay(randomWordValue);
+    const newRandomPhrase = getRandomPhraseAsArray();
+     addPhraseToDisplay(newRandomPhrase);
     
 };
     
